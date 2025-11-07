@@ -1,11 +1,13 @@
 import os
 from troposphere import (
     Template, Parameter, Ref, GetAtt, Sub, Select, GetAZs, Join,
-    ec2,Output,
+    ec2,Output, 
 )
 
+S3_FLOW_LOG_BUCKET_NAME = "polystudents3-moureau-armbruster2"
+
 t = Template()
-t.set_description("TP4 - Question 1 - VPC")
+t.set_description("TP4 - Question 3.1 - VPC")
 
 # création des paramètres
 env_name = t.add_parameter(Parameter(
@@ -48,7 +50,6 @@ private_sn2_cidr = t.add_parameter(Parameter(
     Default="10.0.144.0/24",
     Description="Private Subnet in availability zone 2"
 ))
-
 
 # création des ressources
 vpc = t.add_resource(ec2.VPC(
@@ -207,9 +208,9 @@ ingress_rules = [
     ec2.SecurityGroupRule(IpProtocol="tcp", FromPort="3389", ToPort="3389", CidrIp="0.0.0.0/0"), # RDP
     ec2.SecurityGroupRule(IpProtocol="tcp", FromPort="1514", ToPort="1514", CidrIp="0.0.0.0/0"), # OSSEC
     ec2.SecurityGroupRule(IpProtocol="tcp", FromPort="9200", ToPort="9300", CidrIp="0.0.0.0/0"), # ElasticSearch Range
-    ec2.SecurityGroupRule(IpProtocol="tcp", FromPort="53", ToPort="53", CidrIp="0.0.0.0/0"),     # DNS TCP
+    ec2.SecurityGroupRule(IpProtocol="tcp", FromPort="53", ToPort="53", CidrIp="0.0.0.0/0"),    # DNS TCP
     # Ports UDP
-    ec2.SecurityGroupRule(IpProtocol="udp", FromPort="53", ToPort="53", CidrIp="0.0.0.0/0"),     # DNS UDP
+    ec2.SecurityGroupRule(IpProtocol="udp", FromPort="53", ToPort="53", CidrIp="0.0.0.0/0"),    # DNS UDP
 ]
 
 sg_ingress = t.add_resource(ec2.SecurityGroup(
@@ -220,7 +221,17 @@ sg_ingress = t.add_resource(ec2.SecurityGroup(
     SecurityGroupIngress=ingress_rules
 ))
 
-# création des outputs
+
+flow_log = t.add_resource(ec2.FlowLog(
+    "VPCFlowLog",
+    LogDestinationType="s3", 
+    LogDestination=Join("", ["arn:aws:s3:::", S3_FLOW_LOG_BUCKET_NAME]), 
+    ResourceId=Ref(vpc), 
+    ResourceType="VPC",
+    TrafficType="REJECT" # enregistre seulement les paquets rejetés
+))
+
+
 t.add_output([
     Output("VPC", Description="A reference to the created VPC", Value=Ref(vpc)),
     Output("PublicSubnets", Description="List of public subnets.",
@@ -231,13 +242,12 @@ t.add_output([
     Output("PrivateSubnet1", Description="Reference to the private subnet in AZ1.", Value=Ref(private_sn1)),
     Output("PublicSubnet2", Description="Reference to the public subnet in AZ2.", Value=Ref(public_sn2)),
     Output("PrivateSubnet2", Description="Reference to the private subnet in AZ2.", Value=Ref(private_sn2)),
-    Output("IngressSecurityGroup", Description="ID of the Ingress Security Group.", Value=Ref(sg_ingress))
+    Output("IngressSecurityGroup", Description="ID of the Ingress Security Group.", Value=Ref(sg_ingress)),
 ])
 
 
 # écriture du template dans un fichier YAML
-
-with open("./yaml/vpc.yaml", 'w') as f:
+with open("./yaml/vpc2.yaml", 'w') as f:
     f.write(t.to_yaml())
 
-print(f"Fichier généré: ./yaml/vpc.yaml")
+print(f"Fichier généré: ./yaml/vpc2.yaml")
