@@ -1,14 +1,169 @@
 {
- "Description": "TP4 - Question 2 - S3 Bucket",
+ "Description": "TP4 - Question 2 et 3.3 - S3 Bucket",
  "Outputs": {
   "S3Bucket": {
    "Description": "Bucket Created! :)",
    "Value": {
     "Ref": "S3Bucket"
    }
+  },
+  "S3BucketBackup": {
+   "Description": "Bucket de backup pour la r\u00e9plication",
+   "Value": {
+    "Ref": "S3BucketBackup"
+   }
   }
  },
  "Resources": {
+  "LogBucketPolicy": {
+   "Properties": {
+    "Bucket": {
+     "Ref": "S3BucketLogs"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:GetBucketAcl",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "cloudtrail.amazonaws.com"
+       },
+       "Resource": {
+        "Fn::GetAtt": [
+         "S3BucketLogs",
+         "Arn"
+        ]
+       },
+       "Sid": "AWSCloudTrailAclCheck"
+      },
+      {
+       "Action": "s3:PutObject",
+       "Condition": {
+        "StringEquals": {
+         "s3:x-amz-acl": "bucket-owner-full-control"
+        }
+       },
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "cloudtrail.amazonaws.com"
+       },
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::GetAtt": [
+            "S3BucketLogs",
+            "Arn"
+           ]
+          },
+          "/AWSLogs/871826697362/*"
+         ]
+        ]
+       },
+       "Sid": "AWSCloudTrailWrite"
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Type": "AWS::S3::BucketPolicy"
+  },
+  "ReplicationRole": {
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "s3.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": [
+          "s3:GetObjectVersion",
+          "s3:GetObjectVersionAcl"
+         ],
+         "Effect": "Allow",
+         "Resource": "arn:aws:s3:::polystudents3-moureau-armbruster/*"
+        },
+        {
+         "Action": [
+          "s3:ReplicateObject",
+          "s3:ReplicateDelete",
+          "s3:ReplicateTags"
+         ],
+         "Effect": "Allow",
+         "Resource": "arn:aws:s3:::polystudents3-moureau-armbruster-back/*"
+        },
+        {
+         "Action": [
+          "kms:Decrypt",
+          "kms:Encrypt",
+          "kms:ReEncrypt*",
+          "kms:GenerateDataKey*",
+          "kms:DescribeKey"
+         ],
+         "Effect": "Allow",
+         "Resource": "arn:aws:kms:ca-central-1:871826697362:key/ff40098e-800a-4a78-af23-178809defbc8"
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "S3ReplicationPolicy"
+     }
+    ]
+   },
+   "Type": "AWS::IAM::Role"
+  },
+  "S3ActivityTrail": {
+   "DependsOn": "LogBucketPolicy",
+   "Properties": {
+    "EventSelectors": [
+     {
+      "DataResources": [
+       {
+        "Type": "AWS::S3::Object",
+        "Values": [
+         {
+          "Fn::Join": [
+           "",
+           [
+            {
+             "Fn::GetAtt": [
+              "S3Bucket",
+              "Arn"
+             ]
+            },
+            "/"
+           ]
+          ]
+         }
+        ]
+       }
+      ],
+      "IncludeManagementEvents": false,
+      "ReadWriteType": "WriteOnly"
+     }
+    ],
+    "IncludeGlobalServiceEvents": false,
+    "IsLogging": true,
+    "IsMultiRegionTrail": false,
+    "S3BucketName": {
+     "Ref": "S3BucketLogs"
+    },
+    "TrailName": "polystudents3-trail"
+   },
+   "Type": "AWS::CloudTrail::Trail"
+  },
   "S3Bucket": {
    "DeletionPolicy": "Retain",
    "Properties": {
@@ -30,8 +185,75 @@
      "IgnorePublicAcls": true,
      "RestrictPublicBuckets": true
     },
+    "ReplicationConfiguration": {
+     "Role": {
+      "Fn::GetAtt": [
+       "ReplicationRole",
+       "Arn"
+      ]
+     },
+     "Rules": [
+      {
+       "DeleteMarkerReplication": {
+        "Status": "Disabled"
+       },
+       "Destination": {
+        "Bucket": {
+         "Fn::GetAtt": [
+          "S3BucketBackup",
+          "Arn"
+         ]
+        }
+       },
+       "Filter": {
+        "Prefix": ""
+       },
+       "Priority": 1,
+       "Status": "Enabled"
+      }
+     ]
+    },
     "VersioningConfiguration": {
      "Status": "Enabled"
+    }
+   },
+   "Type": "AWS::S3::Bucket"
+  },
+  "S3BucketBackup": {
+   "Properties": {
+    "AccessControl": "Private",
+    "BucketEncryption": {
+     "ServerSideEncryptionConfiguration": [
+      {
+       "ServerSideEncryptionByDefault": {
+        "KMSMasterKeyID": "arn:aws:kms:ca-central-1:871826697362:key/ff40098e-800a-4a78-af23-178809defbc8",
+        "SSEAlgorithm": "aws:kms"
+       }
+      }
+     ]
+    },
+    "BucketName": "polystudents3-moureau-armbruster-back",
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": true,
+     "BlockPublicPolicy": true,
+     "IgnorePublicAcls": true,
+     "RestrictPublicBuckets": true
+    },
+    "VersioningConfiguration": {
+     "Status": "Enabled"
+    }
+   },
+   "Type": "AWS::S3::Bucket"
+  },
+  "S3BucketLogs": {
+   "Properties": {
+    "AccessControl": "Private",
+    "BucketName": "polystudents3-moureau-armbruster-logs",
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": true,
+     "BlockPublicPolicy": true,
+     "IgnorePublicAcls": true,
+     "RestrictPublicBuckets": true
     }
    },
    "Type": "AWS::S3::Bucket"
