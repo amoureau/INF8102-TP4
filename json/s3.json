@@ -1,0 +1,40 @@
+{
+ "Description": "TP4 - Question 2 - S3 Bucket",
+ "Outputs": {
+  "S3Bucket": {
+   "Description": "Bucket Created! :)",
+   "Value": {
+    "Ref": "S3Bucket"
+   }
+  }
+ },
+ "Resources": {
+  "S3Bucket": {
+   "DeletionPolicy": "Retain",
+   "Properties": {
+    "AccessControl": "Private",
+    "BucketEncryption": {
+     "ServerSideEncryptionConfiguration": [
+      {
+       "ServerSideEncryptionByDefault": {
+        "KMSMasterKeyID": "arn:aws:kms:ca-central-1:871826697362:key/ff40098e-800a-4a78-af23-178809defbc8",
+        "SSEAlgorithm": "aws:kms"
+       }
+      }
+     ]
+    },
+    "BucketName": "polystudents3-moureau-armbruster",
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": true,
+     "BlockPublicPolicy": true,
+     "IgnorePublicAcls": true,
+     "RestrictPublicBuckets": true
+    },
+    "VersioningConfiguration": {
+     "Status": "Enabled"
+    }
+   },
+   "Type": "AWS::S3::Bucket"
+  }
+ }
+}
