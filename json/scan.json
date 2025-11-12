@@ -1,0 +1,2135 @@
+{
+  "SchemaVersion": 2,
+  "CreatedAt": "2025-11-12T15:30:34.371870016-05:00",
+  "ArtifactName": "iacconfig",
+  "ArtifactType": "filesystem",
+  "Results": [
+    {
+      "Target": "s3.json",
+      "Class": "config",
+      "Type": "cloudformation",
+      "MisconfSummary": {
+        "Successes": 45,
+        "Failures": 6
+      },
+      "Misconfigurations": [
+        {
+          "Type": "CloudFormation Security Check",
+          "ID": "AVD-AWS-0014",
+          "AVDID": "AVD-AWS-0014",
+          "Title": "Cloudtrail should be enabled in all regions regardless of where your AWS resources are generally homed",
+          "Description": "Activity could be happening in your account in a different region. When creating Cloudtrail in the AWS Management Console the trail is configured by default to be multi-region, this isn't the case with the Terraform resource. Cloudtrail should cover the full AWS account to ensure you can track changes in regions you are not actively operating in.\n",
+          "Message": "Trail is not enabled across all regions.",
+          "Namespace": "builtin.aws.cloudtrail.aws0014",
+          "Query": "data.builtin.aws.cloudtrail.aws0014.deny",
+          "Resolution": "Enable Cloudtrail in all regions",
+          "Severity": "MEDIUM",
+          "PrimaryURL": "https://avd.aquasec.com/misconfig/avd-aws-0014",
+          "References": [
+            "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/receive-cloudtrail-log-files-from-multiple-regions.html",
+            "https://avd.aquasec.com/misconfig/avd-aws-0014"
+          ],
+          "Status": "FAIL",
+          "CauseMetadata": {
+            "Resource": "S3ActivityTrail",
+            "Provider": "AWS",
+            "Service": "cloudtrail",
+            "StartLine": 159,
+            "EndLine": 159,
+            "Code": {
+              "Lines": [
+                {
+                  "Number": 127,
+                  "Content": "  \"S3ActivityTrail\": {",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;37m\"S3ActivityTrail\"\u001b[0m: {",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 128,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 159,
+                  "Content": "    \"IsMultiRegionTrail\": false,",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "    \u001b[38;5;33m\"IsMultiRegionTrail\"\u001b[0m: \u001b[38;5;166mfalse\u001b[0m,",
+                  "FirstCause": true,
+                  "LastCause": true
+                },
+                {
+                  "Number": 165,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 166,
+                  "Content": "  },",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m  },",
+                  "FirstCause": false,
+                  "LastCause": false
+                }
+              ]
+            },
+            "Occurrences": [
+              {
+                "Resource": "S3ActivityTrail",
+                "Filename": "s3.json",
+                "Location": {
+                  "StartLine": 127,
+                  "EndLine": 166
+                }
+              }
+            ]
+          }
+        },
+        {
+          "Type": "CloudFormation Security Check",
+          "ID": "AVD-AWS-0015",
+          "AVDID": "AVD-AWS-0015",
+          "Title": "CloudTrail should use Customer managed keys to encrypt the logs",
+          "Description": "Using AWS managed keys does not allow for fine grained control.  Using Customer managed keys provides comprehensive control over cryptographic keys, enabling management of policies, permissions, and rotation, thus enhancing security and compliance measures for sensitive data and systems.\n",
+          "Message": "CloudTrail does not use a customer managed key to encrypt the logs.",
+          "Namespace": "builtin.aws.cloudtrail.aws0015",
+          "Query": "data.builtin.aws.cloudtrail.aws0015.deny",
+          "Resolution": "Use Customer managed key",
+          "Severity": "HIGH",
+          "PrimaryURL": "https://avd.aquasec.com/misconfig/avd-aws-0015",
+          "References": [
+            "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/encrypting-cloudtrail-log-files-with-aws-kms.html",
+            "https://docs.aws.amazon.com/kms/latest/developerguide/concepts.html#key-mgmt",
+            "https://avd.aquasec.com/misconfig/avd-aws-0015"
+          ],
+          "Status": "FAIL",
+          "CauseMetadata": {
+            "Resource": "s3.json:127-166",
+            "Provider": "AWS",
+            "Service": "cloudtrail",
+            "StartLine": 127,
+            "EndLine": 166,
+            "Code": {
+              "Lines": [
+                {
+                  "Number": 127,
+                  "Content": "  \"S3ActivityTrail\": {",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;37m\"S3ActivityTrail\"\u001b[0m: {",
+                  "FirstCause": true,
+                  "LastCause": false
+                },
+                {
+                  "Number": 128,
+                  "Content": "   \"DependsOn\": \"LogBucketPolicy\",",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "   \u001b[38;5;33m\"DependsOn\"\u001b[0m: \u001b[38;5;37m\"LogBucketPolicy\"\u001b[0m,",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 129,
+                  "Content": "   \"Properties\": {",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "   \u001b[38;5;33m\"Properties\"\u001b[0m: {",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 130,
+                  "Content": "    \"EventSelectors\": [",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "    \u001b[38;5;33m\"EventSelectors\"\u001b[0m: [",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 131,
+                  "Content": "     {",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "     {",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 132,
+                  "Content": "      \"DataResources\": [",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33m\"DataResources\"\u001b[0m: [",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 133,
+                  "Content": "       {",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "       {",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 134,
+                  "Content": "        \"Type\": \"AWS::S3::Object\",",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "        \u001b[38;5;33m\"Type\"\u001b[0m: \u001b[38;5;37m\"AWS::S3::Object\"\u001b[0m,",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 135,
+                  "Content": "        \"Values\": [",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "        \u001b[38;5;33m\"Values\"\u001b[0m: [",
+                  "FirstCause": false,
+                  "LastCause": true
+                },
+                {
+                  "Number": 136,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                }
+              ]
+            }
+          }
+        },
+        {
+          "Type": "CloudFormation Security Check",
+          "ID": "AVD-AWS-0016",
+          "AVDID": "AVD-AWS-0016",
+          "Title": "Cloudtrail log validation should be enabled to prevent tampering of log data",
+          "Description": "Illicit activity could be removed from the logs. Log validation should be activated on Cloudtrail logs to prevent the tampering of the underlying data in the S3 bucket. It is feasible that a rogue actor compromising an AWS account might want to modify the log data to remove trace of their actions.\n",
+          "Message": "Trail does not have log validation enabled.",
+          "Namespace": "builtin.aws.cloudtrail.aws0016",
+          "Query": "data.builtin.aws.cloudtrail.aws0016.deny",
+          "Resolution": "Turn on log validation for Cloudtrail",
+          "Severity": "HIGH",
+          "PrimaryURL": "https://avd.aquasec.com/misconfig/avd-aws-0016",
+          "References": [
+            "https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-intro.html",
+            "https://avd.aquasec.com/misconfig/avd-aws-0016"
+          ],
+          "Status": "FAIL",
+          "CauseMetadata": {
+            "Resource": "s3.json:127-166",
+            "Provider": "AWS",
+            "Service": "cloudtrail",
+            "StartLine": 127,
+            "EndLine": 166,
+            "Code": {
+              "Lines": [
+                {
+                  "Number": 127,
+                  "Content": "  \"S3ActivityTrail\": {",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;37m\"S3ActivityTrail\"\u001b[0m: {",
+                  "FirstCause": true,
+                  "LastCause": false
+                },
+                {
+                  "Number": 128,
+                  "Content": "   \"DependsOn\": \"LogBucketPolicy\",",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "   \u001b[38;5;33m\"DependsOn\"\u001b[0m: \u001b[38;5;37m\"LogBucketPolicy\"\u001b[0m,",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 129,
+                  "Content": "   \"Properties\": {",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "   \u001b[38;5;33m\"Properties\"\u001b[0m: {",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 130,
+                  "Content": "    \"EventSelectors\": [",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "    \u001b[38;5;33m\"EventSelectors\"\u001b[0m: [",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 131,
+                  "Content": "     {",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "     {",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 132,
+                  "Content": "      \"DataResources\": [",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33m\"DataResources\"\u001b[0m: [",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 133,
+                  "Content": "       {",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "       {",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 134,
+                  "Content": "        \"Type\": \"AWS::S3::Object\",",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "        \u001b[38;5;33m\"Type\"\u001b[0m: \u001b[38;5;37m\"AWS::S3::Object\"\u001b[0m,",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 135,
+                  "Content": "        \"Values\": [",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "        \u001b[38;5;33m\"Values\"\u001b[0m: [",
+                  "FirstCause": false,
+                  "LastCause": true
+                },
+                {
+                  "Number": 136,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                }
+              ]
+            }
+          }
+        },
+        {
+          "Type": "CloudFormation Security Check",
+          "ID": "AVD-AWS-0088",
+          "AVDID": "AVD-AWS-0088",
+          "Title": "Unencrypted S3 bucket.",
+          "Description": "S3 Buckets should be encrypted to protect the data that is stored within them if access is compromised.\n",
+          "Message": "Bucket does not have encryption enabled",
+          "Namespace": "builtin.aws.s3.aws0088",
+          "Query": "data.builtin.aws.s3.aws0088.deny",
+          "Resolution": "Configure bucket encryption",
+          "Severity": "HIGH",
+          "PrimaryURL": "https://avd.aquasec.com/misconfig/avd-aws-0088",
+          "References": [
+            "https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucket-encryption.html",
+            "https://avd.aquasec.com/misconfig/avd-aws-0088"
+          ],
+          "Status": "FAIL",
+          "CauseMetadata": {
+            "Resource": "s3.json:248-260",
+            "Provider": "AWS",
+            "Service": "s3",
+            "StartLine": 248,
+            "EndLine": 260,
+            "Code": {
+              "Lines": [
+                {
+                  "Number": 248,
+                  "Content": "  \"S3BucketLogs\": {",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;37m\"S3BucketLogs\"\u001b[0m: {",
+                  "FirstCause": true,
+                  "LastCause": false
+                },
+                {
+                  "Number": 249,
+                  "Content": "   \"Properties\": {",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "   \u001b[38;5;33m\"Properties\"\u001b[0m: {",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 250,
+                  "Content": "    \"AccessControl\": \"Private\",",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "    \u001b[38;5;33m\"AccessControl\"\u001b[0m: \u001b[38;5;37m\"Private\"\u001b[0m,",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 251,
+                  "Content": "    \"BucketName\": \"polystudents3-moureau-armbruster-logs\",",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "    \u001b[38;5;33m\"BucketName\"\u001b[0m: \u001b[38;5;37m\"polystudents3-moureau-armbruster-logs\"\u001b[0m,",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 252,
+                  "Content": "    \"PublicAccessBlockConfiguration\": {",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "    \u001b[38;5;33m\"PublicAccessBlockConfiguration\"\u001b[0m: {",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 253,
+                  "Content": "     \"BlockPublicAcls\": true,",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "     \u001b[38;5;33m\"BlockPublicAcls\"\u001b[0m: \u001b[38;5;166mtrue\u001b[0m,",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 254,
+                  "Content": "     \"BlockPublicPolicy\": true,",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "     \u001b[38;5;33m\"BlockPublicPolicy\"\u001b[0m: \u001b[38;5;166mtrue\u001b[0m,",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 255,
+                  "Content": "     \"IgnorePublicAcls\": true,",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "     \u001b[38;5;33m\"IgnorePublicAcls\"\u001b[0m: \u001b[38;5;166mtrue\u001b[0m,",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 256,
+                  "Content": "     \"RestrictPublicBuckets\": true",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "     \u001b[38;5;33m\"RestrictPublicBuckets\"\u001b[0m: \u001b[38;5;166mtrue",
+                  "FirstCause": false,
+                  "LastCause": true
+                },
+                {
+                  "Number": 257,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                }
+              ]
+            }
+          }
+        },
+        {
+          "Type": "CloudFormation Security Check",
+          "ID": "AVD-AWS-0090",
+          "AVDID": "AVD-AWS-0090",
+          "Title": "S3 Data should be versioned",
+          "Description": "Versioning in Amazon S3 is a means of keeping multiple variants of an object in the same bucket.\n\nYou can use the S3 Versioning feature to preserve, retrieve, and restore every version of every object stored in your buckets.\n\nWith versioning you can recover more easily from both unintended user actions and application failures.\n\nWhen you enable versioning, also keep in mind the potential costs of storing noncurrent versions of objects. To help manage those costs, consider setting up an S3 Lifecycle configuration.\n",
+          "Message": "Bucket does not have versioning enabled",
+          "Namespace": "builtin.aws.s3.aws0090",
+          "Query": "data.builtin.aws.s3.aws0090.deny",
+          "Resolution": "Enable versioning to protect against accidental/malicious removal or modification",
+          "Severity": "MEDIUM",
+          "PrimaryURL": "https://avd.aquasec.com/misconfig/avd-aws-0090",
+          "References": [
+            "https://docs.aws.amazon.com/AmazonS3/latest/userguide/Versioning.html",
+            "https://aws.amazon.com/blogs/storage/reduce-storage-costs-with-fewer-noncurrent-versions-using-amazon-s3-lifecycle/",
+            "https://avd.aquasec.com/misconfig/avd-aws-0090"
+          ],
+          "Status": "FAIL",
+          "CauseMetadata": {
+            "Resource": "s3.json:248-260",
+            "Provider": "AWS",
+            "Service": "s3",
+            "StartLine": 248,
+            "EndLine": 260,
+            "Code": {
+              "Lines": [
+                {
+                  "Number": 248,
+                  "Content": "  \"S3BucketLogs\": {",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;37m\"S3BucketLogs\"\u001b[0m: {",
+                  "FirstCause": true,
+                  "LastCause": false
+                },
+                {
+                  "Number": 249,
+                  "Content": "   \"Properties\": {",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "   \u001b[38;5;33m\"Properties\"\u001b[0m: {",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 250,
+                  "Content": "    \"AccessControl\": \"Private\",",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "    \u001b[38;5;33m\"AccessControl\"\u001b[0m: \u001b[38;5;37m\"Private\"\u001b[0m,",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 251,
+                  "Content": "    \"BucketName\": \"polystudents3-moureau-armbruster-logs\",",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "    \u001b[38;5;33m\"BucketName\"\u001b[0m: \u001b[38;5;37m\"polystudents3-moureau-armbruster-logs\"\u001b[0m,",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 252,
+                  "Content": "    \"PublicAccessBlockConfiguration\": {",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "    \u001b[38;5;33m\"PublicAccessBlockConfiguration\"\u001b[0m: {",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 253,
+                  "Content": "     \"BlockPublicAcls\": true,",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "     \u001b[38;5;33m\"BlockPublicAcls\"\u001b[0m: \u001b[38;5;166mtrue\u001b[0m,",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 254,
+                  "Content": "     \"BlockPublicPolicy\": true,",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "     \u001b[38;5;33m\"BlockPublicPolicy\"\u001b[0m: \u001b[38;5;166mtrue\u001b[0m,",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 255,
+                  "Content": "     \"IgnorePublicAcls\": true,",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "     \u001b[38;5;33m\"IgnorePublicAcls\"\u001b[0m: \u001b[38;5;166mtrue\u001b[0m,",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 256,
+                  "Content": "     \"RestrictPublicBuckets\": true",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "     \u001b[38;5;33m\"RestrictPublicBuckets\"\u001b[0m: \u001b[38;5;166mtrue",
+                  "FirstCause": false,
+                  "LastCause": true
+                },
+                {
+                  "Number": 257,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                }
+              ]
+            }
+          }
+        },
+        {
+          "Type": "CloudFormation Security Check",
+          "ID": "AVD-AWS-0132",
+          "AVDID": "AVD-AWS-0132",
+          "Title": "S3 encryption should use Customer Managed Keys",
+          "Description": "Encryption using AWS keys provides protection for your S3 buckets. To increase control of the encryption and manage factors like rotation use customer managed keys.\n",
+          "Message": "Bucket does not encrypt data with a customer managed key.",
+          "Namespace": "builtin.aws.s3.aws0132",
+          "Query": "data.builtin.aws.s3.aws0132.deny",
+          "Resolution": "Enable encryption using customer managed keys",
+          "Severity": "HIGH",
+          "PrimaryURL": "https://avd.aquasec.com/misconfig/avd-aws-0132",
+          "References": [
+            "https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucket-encryption.html",
+            "https://avd.aquasec.com/misconfig/avd-aws-0132"
+          ],
+          "Status": "FAIL",
+          "CauseMetadata": {
+            "Resource": "s3.json:248-260",
+            "Provider": "AWS",
+            "Service": "s3",
+            "StartLine": 248,
+            "EndLine": 260,
+            "Code": {
+              "Lines": [
+                {
+                  "Number": 248,
+                  "Content": "  \"S3BucketLogs\": {",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;37m\"S3BucketLogs\"\u001b[0m: {",
+                  "FirstCause": true,
+                  "LastCause": false
+                },
+                {
+                  "Number": 249,
+                  "Content": "   \"Properties\": {",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "   \u001b[38;5;33m\"Properties\"\u001b[0m: {",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 250,
+                  "Content": "    \"AccessControl\": \"Private\",",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "    \u001b[38;5;33m\"AccessControl\"\u001b[0m: \u001b[38;5;37m\"Private\"\u001b[0m,",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 251,
+                  "Content": "    \"BucketName\": \"polystudents3-moureau-armbruster-logs\",",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "    \u001b[38;5;33m\"BucketName\"\u001b[0m: \u001b[38;5;37m\"polystudents3-moureau-armbruster-logs\"\u001b[0m,",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 252,
+                  "Content": "    \"PublicAccessBlockConfiguration\": {",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "    \u001b[38;5;33m\"PublicAccessBlockConfiguration\"\u001b[0m: {",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 253,
+                  "Content": "     \"BlockPublicAcls\": true,",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "     \u001b[38;5;33m\"BlockPublicAcls\"\u001b[0m: \u001b[38;5;166mtrue\u001b[0m,",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 254,
+                  "Content": "     \"BlockPublicPolicy\": true,",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "     \u001b[38;5;33m\"BlockPublicPolicy\"\u001b[0m: \u001b[38;5;166mtrue\u001b[0m,",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 255,
+                  "Content": "     \"IgnorePublicAcls\": true,",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "     \u001b[38;5;33m\"IgnorePublicAcls\"\u001b[0m: \u001b[38;5;166mtrue\u001b[0m,",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 256,
+                  "Content": "     \"RestrictPublicBuckets\": true",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "     \u001b[38;5;33m\"RestrictPublicBuckets\"\u001b[0m: \u001b[38;5;166mtrue",
+                  "FirstCause": false,
+                  "LastCause": true
+                },
+                {
+                  "Number": 257,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "Target": "vpc3.yaml",
+      "Class": "config",
+      "Type": "cloudformation",
+      "MisconfSummary": {
+        "Successes": 34,
+        "Failures": 12
+      },
+      "Misconfigurations": [
+        {
+          "Type": "CloudFormation Security Check",
+          "ID": "AVD-AWS-0028",
+          "AVDID": "AVD-AWS-0028",
+          "Title": "aws_instance should activate session tokens for Instance Metadata Service.",
+          "Description": "IMDS v2 (Instance Metadata Service) introduced session authentication tokens which improve security when talking to IMDS.\n\nBy default \u003ccode\u003eaws_instance\u003c/code\u003e resource sets IMDS session auth tokens to be optional.\n\nTo fully protect IMDS you need to enable session tokens by using \u003ccode\u003emetadata_options\u003c/code\u003e block and its \u003ccode\u003ehttp_tokens\u003c/code\u003e variable set to \u003ccode\u003erequired\u003c/code\u003e.\n",
+          "Message": "Instance does not require IMDS access to require a token.",
+          "Namespace": "builtin.aws.ec2.aws0028",
+          "Query": "data.builtin.aws.ec2.aws0028.deny",
+          "Resolution": "Enable HTTP token requirement for IMDS",
+          "Severity": "HIGH",
+          "PrimaryURL": "https://avd.aquasec.com/misconfig/avd-aws-0028",
+          "References": [
+            "https://aws.amazon.com/blogs/security/defense-in-depth-open-firewalls-reverse-proxies-ssrf-vulnerabilities-ec2-instance-metadata-service",
+            "https://avd.aquasec.com/misconfig/avd-aws-0028"
+          ],
+          "Status": "FAIL",
+          "CauseMetadata": {
+            "Resource": "vpc3.yaml:188-200",
+            "Provider": "AWS",
+            "Service": "ec2",
+            "StartLine": 188,
+            "EndLine": 200,
+            "Code": {
+              "Lines": [
+                {
+                  "Number": 188,
+                  "Content": "  PrivateInstanceAZ1:",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;33mPrivateInstanceAZ1\u001b[0m:",
+                  "FirstCause": true,
+                  "LastCause": false
+                },
+                {
+                  "Number": 189,
+                  "Content": "    Properties:",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "    \u001b[38;5;33mProperties\u001b[0m:",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 190,
+                  "Content": "      IamInstanceProfile: !Ref 'LabInstanceProfile'",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mIamInstanceProfile\u001b[0m: !Ref 'LabInstanceProfile'",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 191,
+                  "Content": "      ImageId: ami-0f8f4e8fb1da4298f",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mImageId\u001b[0m: ami-0f8f4e8fb1da4298f",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 192,
+                  "Content": "      InstanceType: t3.micro",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mInstanceType\u001b[0m: t3.micro",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 193,
+                  "Content": "      KeyName: cle_ssh_tp4",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mKeyName\u001b[0m: cle_ssh_tp4",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 194,
+                  "Content": "      SecurityGroupIds:",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mSecurityGroupIds\u001b[0m:",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 195,
+                  "Content": "        - !Ref 'IngressSecurityGroup'",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "        - !Ref 'IngressSecurityGroup'",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 196,
+                  "Content": "      SubnetId: !Ref 'PrivateSubnet1'",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mSubnetId\u001b[0m: !Ref 'PrivateSubnet1'",
+                  "FirstCause": false,
+                  "LastCause": true
+                },
+                {
+                  "Number": 197,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                }
+              ]
+            }
+          }
+        },
+        {
+          "Type": "CloudFormation Security Check",
+          "ID": "AVD-AWS-0028",
+          "AVDID": "AVD-AWS-0028",
+          "Title": "aws_instance should activate session tokens for Instance Metadata Service.",
+          "Description": "IMDS v2 (Instance Metadata Service) introduced session authentication tokens which improve security when talking to IMDS.\n\nBy default \u003ccode\u003eaws_instance\u003c/code\u003e resource sets IMDS session auth tokens to be optional.\n\nTo fully protect IMDS you need to enable session tokens by using \u003ccode\u003emetadata_options\u003c/code\u003e block and its \u003ccode\u003ehttp_tokens\u003c/code\u003e variable set to \u003ccode\u003erequired\u003c/code\u003e.\n",
+          "Message": "Instance does not require IMDS access to require a token.",
+          "Namespace": "builtin.aws.ec2.aws0028",
+          "Query": "data.builtin.aws.ec2.aws0028.deny",
+          "Resolution": "Enable HTTP token requirement for IMDS",
+          "Severity": "HIGH",
+          "PrimaryURL": "https://avd.aquasec.com/misconfig/avd-aws-0028",
+          "References": [
+            "https://aws.amazon.com/blogs/security/defense-in-depth-open-firewalls-reverse-proxies-ssrf-vulnerabilities-ec2-instance-metadata-service",
+            "https://avd.aquasec.com/misconfig/avd-aws-0028"
+          ],
+          "Status": "FAIL",
+          "CauseMetadata": {
+            "Resource": "vpc3.yaml:201-213",
+            "Provider": "AWS",
+            "Service": "ec2",
+            "StartLine": 201,
+            "EndLine": 213,
+            "Code": {
+              "Lines": [
+                {
+                  "Number": 201,
+                  "Content": "  PrivateInstanceAZ2:",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;33mPrivateInstanceAZ2\u001b[0m:",
+                  "FirstCause": true,
+                  "LastCause": false
+                },
+                {
+                  "Number": 202,
+                  "Content": "    Properties:",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "    \u001b[38;5;33mProperties\u001b[0m:",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 203,
+                  "Content": "      IamInstanceProfile: !Ref 'LabInstanceProfile'",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mIamInstanceProfile\u001b[0m: !Ref 'LabInstanceProfile'",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 204,
+                  "Content": "      ImageId: ami-0f8f4e8fb1da4298f",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mImageId\u001b[0m: ami-0f8f4e8fb1da4298f",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 205,
+                  "Content": "      InstanceType: t3.micro",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mInstanceType\u001b[0m: t3.micro",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 206,
+                  "Content": "      KeyName: cle_ssh_tp4",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mKeyName\u001b[0m: cle_ssh_tp4",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 207,
+                  "Content": "      SecurityGroupIds:",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mSecurityGroupIds\u001b[0m:",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 208,
+                  "Content": "        - !Ref 'IngressSecurityGroup'",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "        - !Ref 'IngressSecurityGroup'",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 209,
+                  "Content": "      SubnetId: !Ref 'PrivateSubnet2'",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mSubnetId\u001b[0m: !Ref 'PrivateSubnet2'",
+                  "FirstCause": false,
+                  "LastCause": true
+                },
+                {
+                  "Number": 210,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                }
+              ]
+            }
+          }
+        },
+        {
+          "Type": "CloudFormation Security Check",
+          "ID": "AVD-AWS-0028",
+          "AVDID": "AVD-AWS-0028",
+          "Title": "aws_instance should activate session tokens for Instance Metadata Service.",
+          "Description": "IMDS v2 (Instance Metadata Service) introduced session authentication tokens which improve security when talking to IMDS.\n\nBy default \u003ccode\u003eaws_instance\u003c/code\u003e resource sets IMDS session auth tokens to be optional.\n\nTo fully protect IMDS you need to enable session tokens by using \u003ccode\u003emetadata_options\u003c/code\u003e block and its \u003ccode\u003ehttp_tokens\u003c/code\u003e variable set to \u003ccode\u003erequired\u003c/code\u003e.\n",
+          "Message": "Instance does not require IMDS access to require a token.",
+          "Namespace": "builtin.aws.ec2.aws0028",
+          "Query": "data.builtin.aws.ec2.aws0028.deny",
+          "Resolution": "Enable HTTP token requirement for IMDS",
+          "Severity": "HIGH",
+          "PrimaryURL": "https://avd.aquasec.com/misconfig/avd-aws-0028",
+          "References": [
+            "https://aws.amazon.com/blogs/security/defense-in-depth-open-firewalls-reverse-proxies-ssrf-vulnerabilities-ec2-instance-metadata-service",
+            "https://avd.aquasec.com/misconfig/avd-aws-0028"
+          ],
+          "Status": "FAIL",
+          "CauseMetadata": {
+            "Resource": "vpc3.yaml:262-274",
+            "Provider": "AWS",
+            "Service": "ec2",
+            "StartLine": 262,
+            "EndLine": 274,
+            "Code": {
+              "Lines": [
+                {
+                  "Number": 262,
+                  "Content": "  PublicInstanceAZ1:",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;33mPublicInstanceAZ1\u001b[0m:",
+                  "FirstCause": true,
+                  "LastCause": false
+                },
+                {
+                  "Number": 263,
+                  "Content": "    Properties:",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "    \u001b[38;5;33mProperties\u001b[0m:",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 264,
+                  "Content": "      IamInstanceProfile: !Ref 'LabInstanceProfile'",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mIamInstanceProfile\u001b[0m: !Ref 'LabInstanceProfile'",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 265,
+                  "Content": "      ImageId: ami-0abac8735a38475db",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mImageId\u001b[0m: ami-0abac8735a38475db",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 266,
+                  "Content": "      InstanceType: t3.micro",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mInstanceType\u001b[0m: t3.micro",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 267,
+                  "Content": "      KeyName: cle_ssh_tp4",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mKeyName\u001b[0m: cle_ssh_tp4",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 268,
+                  "Content": "      SecurityGroupIds:",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mSecurityGroupIds\u001b[0m:",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 269,
+                  "Content": "        - !Ref 'IngressSecurityGroup'",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "        - !Ref 'IngressSecurityGroup'",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 270,
+                  "Content": "      SubnetId: !Ref 'PublicSubnet1'",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mSubnetId\u001b[0m: !Ref 'PublicSubnet1'",
+                  "FirstCause": false,
+                  "LastCause": true
+                },
+                {
+                  "Number": 271,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                }
+              ]
+            }
+          }
+        },
+        {
+          "Type": "CloudFormation Security Check",
+          "ID": "AVD-AWS-0028",
+          "AVDID": "AVD-AWS-0028",
+          "Title": "aws_instance should activate session tokens for Instance Metadata Service.",
+          "Description": "IMDS v2 (Instance Metadata Service) introduced session authentication tokens which improve security when talking to IMDS.\n\nBy default \u003ccode\u003eaws_instance\u003c/code\u003e resource sets IMDS session auth tokens to be optional.\n\nTo fully protect IMDS you need to enable session tokens by using \u003ccode\u003emetadata_options\u003c/code\u003e block and its \u003ccode\u003ehttp_tokens\u003c/code\u003e variable set to \u003ccode\u003erequired\u003c/code\u003e.\n",
+          "Message": "Instance does not require IMDS access to require a token.",
+          "Namespace": "builtin.aws.ec2.aws0028",
+          "Query": "data.builtin.aws.ec2.aws0028.deny",
+          "Resolution": "Enable HTTP token requirement for IMDS",
+          "Severity": "HIGH",
+          "PrimaryURL": "https://avd.aquasec.com/misconfig/avd-aws-0028",
+          "References": [
+            "https://aws.amazon.com/blogs/security/defense-in-depth-open-firewalls-reverse-proxies-ssrf-vulnerabilities-ec2-instance-metadata-service",
+            "https://avd.aquasec.com/misconfig/avd-aws-0028"
+          ],
+          "Status": "FAIL",
+          "CauseMetadata": {
+            "Resource": "vpc3.yaml:275-287",
+            "Provider": "AWS",
+            "Service": "ec2",
+            "StartLine": 275,
+            "EndLine": 287,
+            "Code": {
+              "Lines": [
+                {
+                  "Number": 275,
+                  "Content": "  PublicInstanceAZ2:",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;33mPublicInstanceAZ2\u001b[0m:",
+                  "FirstCause": true,
+                  "LastCause": false
+                },
+                {
+                  "Number": 276,
+                  "Content": "    Properties:",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "    \u001b[38;5;33mProperties\u001b[0m:",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 277,
+                  "Content": "      IamInstanceProfile: !Ref 'LabInstanceProfile'",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mIamInstanceProfile\u001b[0m: !Ref 'LabInstanceProfile'",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 278,
+                  "Content": "      ImageId: ami-0abac8735a38475db",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mImageId\u001b[0m: ami-0abac8735a38475db",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 279,
+                  "Content": "      InstanceType: t3.micro",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mInstanceType\u001b[0m: t3.micro",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 280,
+                  "Content": "      KeyName: cle_ssh_tp4",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mKeyName\u001b[0m: cle_ssh_tp4",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 281,
+                  "Content": "      SecurityGroupIds:",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mSecurityGroupIds\u001b[0m:",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 282,
+                  "Content": "        - !Ref 'IngressSecurityGroup'",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "        - !Ref 'IngressSecurityGroup'",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 283,
+                  "Content": "      SubnetId: !Ref 'PublicSubnet2'",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mSubnetId\u001b[0m: !Ref 'PublicSubnet2'",
+                  "FirstCause": false,
+                  "LastCause": true
+                },
+                {
+                  "Number": 284,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                }
+              ]
+            }
+          }
+        },
+        {
+          "Type": "CloudFormation Security Check",
+          "ID": "AVD-AWS-0107",
+          "AVDID": "AVD-AWS-0107",
+          "Title": "Security groups should not allow unrestricted ingress to SSH or RDP from any IP address.",
+          "Description": "Security groups provide stateful filtering of ingress and egress network traffic to AWS\nresources. It is recommended that no security group allows unrestricted ingress access to\nremote server administration ports, such as SSH to port 22 and RDP to port 3389.\n",
+          "Message": "Security group rule allows unrestricted ingress from any IP address.",
+          "Namespace": "builtin.aws.ec2.aws0107",
+          "Query": "data.builtin.aws.ec2.aws0107.deny",
+          "Resolution": "Set a more restrictive CIDR range",
+          "Severity": "HIGH",
+          "PrimaryURL": "https://avd.aquasec.com/misconfig/avd-aws-0107",
+          "References": [
+            "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/security-group-rules-reference.html",
+            "https://docs.aws.amazon.com/securityhub/latest/userguide/ec2-controls.html#ec2-13",
+            "https://docs.aws.amazon.com/securityhub/latest/userguide/ec2-controls.html#ec2-14",
+            "https://avd.aquasec.com/misconfig/avd-aws-0107"
+          ],
+          "Status": "FAIL",
+          "CauseMetadata": {
+            "Resource": "IngressSecurityGroup",
+            "Provider": "AWS",
+            "Service": "ec2",
+            "StartLine": 93,
+            "EndLine": 93,
+            "Code": {
+              "Lines": [
+                {
+                  "Number": 88,
+                  "Content": "  IngressSecurityGroup:",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;33mIngressSecurityGroup\u001b[0m:",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 89,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 93,
+                  "Content": "        - CidrIp: '0.0.0.0/0'",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "        - \u001b[38;5;33mCidrIp\u001b[0m: \u001b[38;5;37m'0.0.0.0/0'",
+                  "FirstCause": true,
+                  "LastCause": true
+                },
+                {
+                  "Number": 137,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 138,
+                  "Content": "    Type: AWS::EC2::SecurityGroup",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "    \u001b[38;5;33mType\u001b[0m: AWS::EC2::SecurityGroup",
+                  "FirstCause": false,
+                  "LastCause": false
+                }
+              ]
+            },
+            "Occurrences": [
+              {
+                "Resource": "IngressSecurityGroup",
+                "Filename": "vpc3.yaml",
+                "Location": {
+                  "StartLine": 88,
+                  "EndLine": 138
+                }
+              }
+            ]
+          }
+        },
+        {
+          "Type": "CloudFormation Security Check",
+          "ID": "AVD-AWS-0107",
+          "AVDID": "AVD-AWS-0107",
+          "Title": "Security groups should not allow unrestricted ingress to SSH or RDP from any IP address.",
+          "Description": "Security groups provide stateful filtering of ingress and egress network traffic to AWS\nresources. It is recommended that no security group allows unrestricted ingress access to\nremote server administration ports, such as SSH to port 22 and RDP to port 3389.\n",
+          "Message": "Security group rule allows unrestricted ingress from any IP address.",
+          "Namespace": "builtin.aws.ec2.aws0107",
+          "Query": "data.builtin.aws.ec2.aws0107.deny",
+          "Resolution": "Set a more restrictive CIDR range",
+          "Severity": "HIGH",
+          "PrimaryURL": "https://avd.aquasec.com/misconfig/avd-aws-0107",
+          "References": [
+            "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/security-group-rules-reference.html",
+            "https://docs.aws.amazon.com/securityhub/latest/userguide/ec2-controls.html#ec2-13",
+            "https://docs.aws.amazon.com/securityhub/latest/userguide/ec2-controls.html#ec2-14",
+            "https://avd.aquasec.com/misconfig/avd-aws-0107"
+          ],
+          "Status": "FAIL",
+          "CauseMetadata": {
+            "Resource": "IngressSecurityGroup",
+            "Provider": "AWS",
+            "Service": "ec2",
+            "StartLine": 117,
+            "EndLine": 117,
+            "Code": {
+              "Lines": [
+                {
+                  "Number": 88,
+                  "Content": "  IngressSecurityGroup:",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;33mIngressSecurityGroup\u001b[0m:",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 89,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 117,
+                  "Content": "        - CidrIp: '0.0.0.0/0'",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "\u001b[0m        - \u001b[38;5;33mCidrIp\u001b[0m: \u001b[38;5;37m'0.0.0.0/0'",
+                  "FirstCause": true,
+                  "LastCause": true
+                },
+                {
+                  "Number": 137,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 138,
+                  "Content": "    Type: AWS::EC2::SecurityGroup",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "    \u001b[38;5;33mType\u001b[0m: AWS::EC2::SecurityGroup",
+                  "FirstCause": false,
+                  "LastCause": false
+                }
+              ]
+            },
+            "Occurrences": [
+              {
+                "Resource": "IngressSecurityGroup",
+                "Filename": "vpc3.yaml",
+                "Location": {
+                  "StartLine": 88,
+                  "EndLine": 138
+                }
+              }
+            ]
+          }
+        },
+        {
+          "Type": "CloudFormation Security Check",
+          "ID": "AVD-AWS-0131",
+          "AVDID": "AVD-AWS-0131",
+          "Title": "Instance with unencrypted block device.",
+          "Description": "Block devices should be encrypted to ensure sensitive data is held securely at rest.\n",
+          "Message": "Root block device is not encrypted.",
+          "Namespace": "builtin.aws.ec2.aws0131",
+          "Query": "data.builtin.aws.ec2.aws0131.deny",
+          "Resolution": "Turn on encryption for all block devices",
+          "Severity": "HIGH",
+          "PrimaryURL": "https://avd.aquasec.com/misconfig/avd-aws-0131",
+          "References": [
+            "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/RootDeviceStorage.html",
+            "https://avd.aquasec.com/misconfig/avd-aws-0131"
+          ],
+          "Status": "FAIL",
+          "CauseMetadata": {
+            "Resource": "vpc3.yaml:188-200",
+            "Provider": "AWS",
+            "Service": "ec2",
+            "StartLine": 188,
+            "EndLine": 200,
+            "Code": {
+              "Lines": [
+                {
+                  "Number": 188,
+                  "Content": "  PrivateInstanceAZ1:",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;33mPrivateInstanceAZ1\u001b[0m:",
+                  "FirstCause": true,
+                  "LastCause": false
+                },
+                {
+                  "Number": 189,
+                  "Content": "    Properties:",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "    \u001b[38;5;33mProperties\u001b[0m:",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 190,
+                  "Content": "      IamInstanceProfile: !Ref 'LabInstanceProfile'",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mIamInstanceProfile\u001b[0m: !Ref 'LabInstanceProfile'",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 191,
+                  "Content": "      ImageId: ami-0f8f4e8fb1da4298f",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mImageId\u001b[0m: ami-0f8f4e8fb1da4298f",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 192,
+                  "Content": "      InstanceType: t3.micro",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mInstanceType\u001b[0m: t3.micro",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 193,
+                  "Content": "      KeyName: cle_ssh_tp4",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mKeyName\u001b[0m: cle_ssh_tp4",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 194,
+                  "Content": "      SecurityGroupIds:",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mSecurityGroupIds\u001b[0m:",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 195,
+                  "Content": "        - !Ref 'IngressSecurityGroup'",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "        - !Ref 'IngressSecurityGroup'",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 196,
+                  "Content": "      SubnetId: !Ref 'PrivateSubnet1'",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mSubnetId\u001b[0m: !Ref 'PrivateSubnet1'",
+                  "FirstCause": false,
+                  "LastCause": true
+                },
+                {
+                  "Number": 197,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                }
+              ]
+            }
+          }
+        },
+        {
+          "Type": "CloudFormation Security Check",
+          "ID": "AVD-AWS-0131",
+          "AVDID": "AVD-AWS-0131",
+          "Title": "Instance with unencrypted block device.",
+          "Description": "Block devices should be encrypted to ensure sensitive data is held securely at rest.\n",
+          "Message": "Root block device is not encrypted.",
+          "Namespace": "builtin.aws.ec2.aws0131",
+          "Query": "data.builtin.aws.ec2.aws0131.deny",
+          "Resolution": "Turn on encryption for all block devices",
+          "Severity": "HIGH",
+          "PrimaryURL": "https://avd.aquasec.com/misconfig/avd-aws-0131",
+          "References": [
+            "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/RootDeviceStorage.html",
+            "https://avd.aquasec.com/misconfig/avd-aws-0131"
+          ],
+          "Status": "FAIL",
+          "CauseMetadata": {
+            "Resource": "vpc3.yaml:201-213",
+            "Provider": "AWS",
+            "Service": "ec2",
+            "StartLine": 201,
+            "EndLine": 213,
+            "Code": {
+              "Lines": [
+                {
+                  "Number": 201,
+                  "Content": "  PrivateInstanceAZ2:",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;33mPrivateInstanceAZ2\u001b[0m:",
+                  "FirstCause": true,
+                  "LastCause": false
+                },
+                {
+                  "Number": 202,
+                  "Content": "    Properties:",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "    \u001b[38;5;33mProperties\u001b[0m:",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 203,
+                  "Content": "      IamInstanceProfile: !Ref 'LabInstanceProfile'",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mIamInstanceProfile\u001b[0m: !Ref 'LabInstanceProfile'",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 204,
+                  "Content": "      ImageId: ami-0f8f4e8fb1da4298f",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mImageId\u001b[0m: ami-0f8f4e8fb1da4298f",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 205,
+                  "Content": "      InstanceType: t3.micro",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mInstanceType\u001b[0m: t3.micro",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 206,
+                  "Content": "      KeyName: cle_ssh_tp4",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mKeyName\u001b[0m: cle_ssh_tp4",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 207,
+                  "Content": "      SecurityGroupIds:",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mSecurityGroupIds\u001b[0m:",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 208,
+                  "Content": "        - !Ref 'IngressSecurityGroup'",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "        - !Ref 'IngressSecurityGroup'",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 209,
+                  "Content": "      SubnetId: !Ref 'PrivateSubnet2'",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mSubnetId\u001b[0m: !Ref 'PrivateSubnet2'",
+                  "FirstCause": false,
+                  "LastCause": true
+                },
+                {
+                  "Number": 210,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                }
+              ]
+            }
+          }
+        },
+        {
+          "Type": "CloudFormation Security Check",
+          "ID": "AVD-AWS-0131",
+          "AVDID": "AVD-AWS-0131",
+          "Title": "Instance with unencrypted block device.",
+          "Description": "Block devices should be encrypted to ensure sensitive data is held securely at rest.\n",
+          "Message": "Root block device is not encrypted.",
+          "Namespace": "builtin.aws.ec2.aws0131",
+          "Query": "data.builtin.aws.ec2.aws0131.deny",
+          "Resolution": "Turn on encryption for all block devices",
+          "Severity": "HIGH",
+          "PrimaryURL": "https://avd.aquasec.com/misconfig/avd-aws-0131",
+          "References": [
+            "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/RootDeviceStorage.html",
+            "https://avd.aquasec.com/misconfig/avd-aws-0131"
+          ],
+          "Status": "FAIL",
+          "CauseMetadata": {
+            "Resource": "vpc3.yaml:262-274",
+            "Provider": "AWS",
+            "Service": "ec2",
+            "StartLine": 262,
+            "EndLine": 274,
+            "Code": {
+              "Lines": [
+                {
+                  "Number": 262,
+                  "Content": "  PublicInstanceAZ1:",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;33mPublicInstanceAZ1\u001b[0m:",
+                  "FirstCause": true,
+                  "LastCause": false
+                },
+                {
+                  "Number": 263,
+                  "Content": "    Properties:",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "    \u001b[38;5;33mProperties\u001b[0m:",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 264,
+                  "Content": "      IamInstanceProfile: !Ref 'LabInstanceProfile'",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mIamInstanceProfile\u001b[0m: !Ref 'LabInstanceProfile'",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 265,
+                  "Content": "      ImageId: ami-0abac8735a38475db",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mImageId\u001b[0m: ami-0abac8735a38475db",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 266,
+                  "Content": "      InstanceType: t3.micro",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mInstanceType\u001b[0m: t3.micro",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 267,
+                  "Content": "      KeyName: cle_ssh_tp4",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mKeyName\u001b[0m: cle_ssh_tp4",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 268,
+                  "Content": "      SecurityGroupIds:",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mSecurityGroupIds\u001b[0m:",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 269,
+                  "Content": "        - !Ref 'IngressSecurityGroup'",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "        - !Ref 'IngressSecurityGroup'",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 270,
+                  "Content": "      SubnetId: !Ref 'PublicSubnet1'",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mSubnetId\u001b[0m: !Ref 'PublicSubnet1'",
+                  "FirstCause": false,
+                  "LastCause": true
+                },
+                {
+                  "Number": 271,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                }
+              ]
+            }
+          }
+        },
+        {
+          "Type": "CloudFormation Security Check",
+          "ID": "AVD-AWS-0131",
+          "AVDID": "AVD-AWS-0131",
+          "Title": "Instance with unencrypted block device.",
+          "Description": "Block devices should be encrypted to ensure sensitive data is held securely at rest.\n",
+          "Message": "Root block device is not encrypted.",
+          "Namespace": "builtin.aws.ec2.aws0131",
+          "Query": "data.builtin.aws.ec2.aws0131.deny",
+          "Resolution": "Turn on encryption for all block devices",
+          "Severity": "HIGH",
+          "PrimaryURL": "https://avd.aquasec.com/misconfig/avd-aws-0131",
+          "References": [
+            "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/RootDeviceStorage.html",
+            "https://avd.aquasec.com/misconfig/avd-aws-0131"
+          ],
+          "Status": "FAIL",
+          "CauseMetadata": {
+            "Resource": "vpc3.yaml:275-287",
+            "Provider": "AWS",
+            "Service": "ec2",
+            "StartLine": 275,
+            "EndLine": 287,
+            "Code": {
+              "Lines": [
+                {
+                  "Number": 275,
+                  "Content": "  PublicInstanceAZ2:",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;33mPublicInstanceAZ2\u001b[0m:",
+                  "FirstCause": true,
+                  "LastCause": false
+                },
+                {
+                  "Number": 276,
+                  "Content": "    Properties:",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "    \u001b[38;5;33mProperties\u001b[0m:",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 277,
+                  "Content": "      IamInstanceProfile: !Ref 'LabInstanceProfile'",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mIamInstanceProfile\u001b[0m: !Ref 'LabInstanceProfile'",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 278,
+                  "Content": "      ImageId: ami-0abac8735a38475db",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mImageId\u001b[0m: ami-0abac8735a38475db",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 279,
+                  "Content": "      InstanceType: t3.micro",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mInstanceType\u001b[0m: t3.micro",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 280,
+                  "Content": "      KeyName: cle_ssh_tp4",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mKeyName\u001b[0m: cle_ssh_tp4",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 281,
+                  "Content": "      SecurityGroupIds:",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mSecurityGroupIds\u001b[0m:",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 282,
+                  "Content": "        - !Ref 'IngressSecurityGroup'",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "        - !Ref 'IngressSecurityGroup'",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 283,
+                  "Content": "      SubnetId: !Ref 'PublicSubnet2'",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mSubnetId\u001b[0m: !Ref 'PublicSubnet2'",
+                  "FirstCause": false,
+                  "LastCause": true
+                },
+                {
+                  "Number": 284,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                }
+              ]
+            }
+          }
+        },
+        {
+          "Type": "CloudFormation Security Check",
+          "ID": "aws-vpc-no-public-ingress-sgr",
+          "AVDID": "AVD-AWS-0164",
+          "Title": "Instances in a subnet should not receive a public IP address by default.",
+          "Description": "You should limit the provision of public IP addresses for resources. Resources should not be exposed on the public internet, but should have access limited to consumers required for the function of your application.\n",
+          "Message": "Subnet associates public IP address.",
+          "Namespace": "builtin.aws.ec2.aws0164",
+          "Query": "data.builtin.aws.ec2.aws0164.deny",
+          "Resolution": "Set the instance to not be publicly accessible",
+          "Severity": "HIGH",
+          "PrimaryURL": "https://avd.aquasec.com/misconfig/aws-vpc-no-public-ingress-sgr",
+          "References": [
+            "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-instance-addressing.html#concepts-public-addresses",
+            "https://avd.aquasec.com/misconfig/aws-vpc-no-public-ingress-sgr"
+          ],
+          "Status": "FAIL",
+          "CauseMetadata": {
+            "Resource": "PublicSubnet1",
+            "Provider": "AWS",
+            "Service": "ec2",
+            "StartLine": 301,
+            "EndLine": 301,
+            "Code": {
+              "Lines": [
+                {
+                  "Number": 295,
+                  "Content": "  PublicSubnet1:",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;33mPublicSubnet1\u001b[0m:",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 296,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 301,
+                  "Content": "      MapPublicIpOnLaunch: true",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mMapPublicIpOnLaunch\u001b[0m: \u001b[38;5;166mtrue",
+                  "FirstCause": true,
+                  "LastCause": true
+                },
+                {
+                  "Number": 305,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 306,
+                  "Content": "    Type: AWS::EC2::Subnet",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "    \u001b[38;5;33mType\u001b[0m: AWS::EC2::Subnet",
+                  "FirstCause": false,
+                  "LastCause": false
+                }
+              ]
+            },
+            "Occurrences": [
+              {
+                "Resource": "PublicSubnet1",
+                "Filename": "vpc3.yaml",
+                "Location": {
+                  "StartLine": 295,
+                  "EndLine": 306
+                }
+              }
+            ]
+          }
+        },
+        {
+          "Type": "CloudFormation Security Check",
+          "ID": "aws-vpc-no-public-ingress-sgr",
+          "AVDID": "AVD-AWS-0164",
+          "Title": "Instances in a subnet should not receive a public IP address by default.",
+          "Description": "You should limit the provision of public IP addresses for resources. Resources should not be exposed on the public internet, but should have access limited to consumers required for the function of your application.\n",
+          "Message": "Subnet associates public IP address.",
+          "Namespace": "builtin.aws.ec2.aws0164",
+          "Query": "data.builtin.aws.ec2.aws0164.deny",
+          "Resolution": "Set the instance to not be publicly accessible",
+          "Severity": "HIGH",
+          "PrimaryURL": "https://avd.aquasec.com/misconfig/aws-vpc-no-public-ingress-sgr",
+          "References": [
+            "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-instance-addressing.html#concepts-public-addresses",
+            "https://avd.aquasec.com/misconfig/aws-vpc-no-public-ingress-sgr"
+          ],
+          "Status": "FAIL",
+          "CauseMetadata": {
+            "Resource": "PublicSubnet2",
+            "Provider": "AWS",
+            "Service": "ec2",
+            "StartLine": 318,
+            "EndLine": 318,
+            "Code": {
+              "Lines": [
+                {
+                  "Number": 312,
+                  "Content": "  PublicSubnet2:",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "  \u001b[38;5;33mPublicSubnet2\u001b[0m:",
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 313,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 318,
+                  "Content": "      MapPublicIpOnLaunch: true",
+                  "IsCause": true,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "      \u001b[38;5;33mMapPublicIpOnLaunch\u001b[0m: \u001b[38;5;166mtrue",
+                  "FirstCause": true,
+                  "LastCause": true
+                },
+                {
+                  "Number": 322,
+                  "Content": "",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": true,
+                  "FirstCause": false,
+                  "LastCause": false
+                },
+                {
+                  "Number": 323,
+                  "Content": "    Type: AWS::EC2::Subnet",
+                  "IsCause": false,
+                  "Annotation": "",
+                  "Truncated": false,
+                  "Highlighted": "    \u001b[38;5;33mType\u001b[0m: AWS::EC2::Subnet",
+                  "FirstCause": false,
+                  "LastCause": false
+                }
+              ]
+            },
+            "Occurrences": [
+              {
+                "Resource": "PublicSubnet2",
+                "Filename": "vpc3.yaml",
+                "Location": {
+                  "StartLine": 312,
+                  "EndLine": 323
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
