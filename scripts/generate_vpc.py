@@ -1,7 +1,7 @@
 import os
 from troposphere import (
     Template, Parameter, Ref, GetAtt, Sub, Select, GetAZs, Join,
-    ec2,Output, 
+    ec2,Output, cloudwatch, iam,
 )
 
 S3_FLOW_LOG_BUCKET_NAME = "polystudents3-moureau-armbruster2"
@@ -232,6 +232,90 @@ flow_log = t.add_resource(ec2.FlowLog(
 ))
 
 
+lab_role = t.add_resource(iam.Role(
+    "LabRole",
+    AssumeRolePolicyDocument={
+        "Version": "2012-10-17",
+        "Statement": [{
+            "Effect": "Allow",
+            "Principal": {"Service": "ec2.amazonaws.com"},
+            "Action": "sts:AssumeRole"
+        }]
+    },
+    Policies=[],
+    Path="/"
+))
+
+iam_profile = t.add_resource(iam.InstanceProfile(
+    "LabInstanceProfile",
+    Path="/",
+    Roles=[Ref(lab_role)]
+))
+
+AMI_ID_Public = "ami-0abac8735a38475db" # Ubuntu Server 24.04
+AMI_ID_Private = "ami-0f8f4e8fb1da4298f" # Windows Server 2025 Base
+KEY_NAME = "cle_ssh_tp4" # nous avons généré une nouvelle clé SSH pour le TP4 au préalable
+
+# instance public AZ1
+t.add_resource(ec2.Instance(
+    "PublicInstanceAZ1",
+    ImageId=AMI_ID_Public,
+    InstanceType="t3.micro",
+    KeyName=KEY_NAME,
+    SubnetId=Ref(public_sn1),
+    SecurityGroupIds=[Ref(sg_ingress)],
+    IamInstanceProfile=Ref(iam_profile),
+    Tags=[{"Key": "Name", "Value": Sub("${EnvironmentName} Public Server AZ1")}]
+))
+
+# instance privée AZ1
+t.add_resource(ec2.Instance(
+    "PrivateInstanceAZ1",
+    ImageId=AMI_ID_Private,
+    InstanceType="t3.micro",
+    KeyName=KEY_NAME,
+    SubnetId=Ref(private_sn1),
+    SecurityGroupIds=[Ref(sg_ingress)],
+    IamInstanceProfile=Ref(iam_profile),
+    Tags=[{"Key": "Name", "Value": Sub("${EnvironmentName} Private Server AZ1")}]
+))
+
+# instance public AZ2
+t.add_resource(ec2.Instance(
+    "PublicInstanceAZ2",
+    ImageId=AMI_ID_Public,
+    InstanceType="t3.micro",
+    KeyName=KEY_NAME,
+    SubnetId=Ref(public_sn2),
+    SecurityGroupIds=[Ref(sg_ingress)],
+    IamInstanceProfile=Ref(iam_profile),
+    Tags=[{"Key": "Name", "Value": Sub("${EnvironmentName} Public Server AZ2")}]
+))
+
+# instance privée AZ2
+t.add_resource(ec2.Instance(
+    "PrivateInstanceAZ2",
+    ImageId=AMI_ID_Private,
+    InstanceType="t3.micro",
+    KeyName=KEY_NAME,
+    SubnetId=Ref(private_sn2),
+    SecurityGroupIds=[Ref(sg_ingress)],
+    IamInstanceProfile=Ref(iam_profile),
+    Tags=[{"Key": "Name", "Value": Sub("${EnvironmentName} Private Server AZ2")}]
+))
+
+t.add_resource(cloudwatch.Alarm(
+    "IngressPacketsAlarm",
+    AlarmDescription="Alarme pour le trafic entrant global sur toutes les instances > 1000 pkts/sec.",
+    Namespace="AWS/EC2",
+    MetricName="NetworkPacketsIn",
+    Statistic="Average",
+    Period="60",
+    EvaluationPeriods="1", 
+    Threshold="1000",
+    ComparisonOperator="GreaterThanThreshold",
+))
+
 t.add_output([
     Output("VPC", Description="A reference to the created VPC", Value=Ref(vpc)),
     Output("PublicSubnets", Description="List of public subnets.",
@@ -247,7 +331,7 @@ t.add_output([
 
 
 # écriture du template dans un fichier YAML
-with open("./yaml/vpc2.yaml", 'w') as f:
+with open("./yaml/vpc3.yaml", 'w') as f:
     f.write(t.to_yaml())
 
-print(f"Fichier généré: ./yaml/vpc2.yaml")
+print(f"Fichier généré: ./yaml/vpc3.yaml")
