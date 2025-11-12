@@ -7,7 +7,7 @@ from troposphere import (
 S3_FLOW_LOG_BUCKET_NAME = "polystudents3-moureau-armbruster2"
 
 t = Template()
-t.set_description("TP4 - Question 3.1 - VPC")
+t.set_description("TP4 - Question 3.2 - VPC")
 
 # création des paramètres
 env_name = t.add_parameter(Parameter(
